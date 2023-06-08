@@ -2,6 +2,15 @@ import './App.css';
 import { useState } from 'react';
 
 function App() {
+
+  const checkDuplicate = (todo) =>{
+      for (let i = 0; i < toDos.length; i++) {
+        if (todo == toDos[i].text){
+          return false
+        }       
+      }
+      return true
+  }
   const [toDos,setTodos] = useState([])
   const [toDo,setTodo] = useState('')
   const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
@@ -18,7 +27,21 @@ function App() {
       </div>
       <div className="input">
         <input value={toDo} onChange={(e)=>setTodo(e.target.value)} type="text" placeholder="🖊️ Add item..." />
-        <i onClick={()=>{setTodos([...toDos,{id:Date.now(),text: toDo,status: false}]);setTodo('')}} className="fas fa-plus"></i>
+        <i onClick={()=>{
+          
+          if(toDo!=''){
+            if(checkDuplicate(toDo)){
+              setTodos([...toDos,{id:Date.now(),text: toDo,status: false}]);setTodo('')
+            }
+            else{
+              alert('duplicate found')
+            }
+          }
+          else
+            alert("todo can't be empty")
+
+          }} className="fas fa-plus"></i>
+          
       </div>
       <div className="todos">
         { toDos.map((obj,index)=>{
